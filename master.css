@@ -6,6 +6,24 @@ html,body{
 	height:100%;
 }
 
+.wrapper{
+	width:80%;
+	height:100%;
+
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+	margin:auto;
+
+	background:#e8d264;
+}
+
+.time-display{
+	display:flex;
+}
+
 .startstop{
     width: 100px;
     height: 40px;
