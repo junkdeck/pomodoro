@@ -2,6 +2,10 @@
 //easy to say when it's 3am and i know /i/ won't be doing it though
 //heheh, sucks to be you, future fred!!
 
+var TIMERSOUND = document.createElement("audio");
+TIMERSOUND.setAttribute("src","./timer.ogg");
+TIMERSOUND.setAttribute("preload","auto");
+
 var i = 1500;              //total clock time, in seconds
 var seconds = 0;
 var minutes = 0;
@@ -13,6 +17,8 @@ $(document).ready(function(){
     updateTime(i);
     updateSessionDisplay(minutes);
     updateTimeDisplay(seconds,minutes);
+
+    // TIMERSOUND.play();
 });
 
 $('.startstop').on('click', function(){
@@ -20,7 +26,6 @@ $('.startstop').on('click', function(){
     if(running){
         interruptTimeout();
     }
-
     toggleRunning();
     mainLoop();
 });
@@ -34,6 +39,7 @@ function mainLoop(){
         //stores the timeout in a referral var
         timeout = setTimeout(mainLoop, 1000);
     }else if (i <= 0){
+        TIMERSOUND.play();
         toggleRunning();
     }
 }
