@@ -1,22 +1,39 @@
-//would be fun to write this semi-functionally. give it a go, fred!
-//easy to say when it's 3am and i know /i/ won't be doing it though
-//heheh, sucks to be you, future fred!!
-
 var TIMERSOUND = document.createElement("audio");
-TIMERSOUND.setAttribute("src","./timer.ogg");
+// TIMERSOUND.setAttribute("src","./timer.ogg");
 TIMERSOUND.setAttribute("preload","auto");
 
-var i = 1500;              //total clock time, in seconds
-var seconds = 0;
-var minutes = 0;
-var running = 0;    //boolean for keeping track of clock state
+var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
+var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
+
+var i = 0;              //current clock timer, in seconds
+// var seconds = 0;
+// var minutes = 0;
+
+// var running = 0;    //boolean for keeping track of clock state
+//REMOVE WHEN DONE TESTING
+var running = 1;    //default to one for testing without mouse usage
+
+var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break
 var timeout = null; //timeout storage
 
 $(document).ready(function(){
+    //set current timer equal to the default session time length
+    i = sessionTime;
+
     //creates minutes/seconds from total time in seconds, and displays them to the user
-    updateTime(i);
-    updateSessionDisplay(minutes);
-    updateTimeDisplay(seconds,minutes);
+    //updateTime returns an array with the time, in the order of "seconds, minutes"
+    var sessionTimeObj = updateTime(sessionTime);
+    var breakTimeObj = updateTime(breakTime);
+    var currentTimeObj = updateTime(i);
+
+    updateBreakDisplay(breakTimeObj.minutes);
+    updateSessionDisplay(sessionTimeObj.minutes);
+    updateTimeDisplay(currentTimeObj);
+
+
+    //REMOVE WHEN DONE TESTING!!
+    mainLoop(); //autostart for testing without mouse usage
+    //REMOVE WHEN DONE TESTING!!
 
     // TIMERSOUND.play();
 });
@@ -31,16 +48,25 @@ $('.startstop').on('click', function(){
 });
 
 function mainLoop(){
+    //play sound when timer runs out, then toggle between session/break time and set the timer to the respective length
+    if (i <= 0){
+        TIMERSOUND.play();
+        if(currentTimer === 'session'){
+            currentTimer = 'break';
+            i = breakTime;
+        }else if(currentTimer === 'break'){
+            currentTimer = 'session';
+            i = sessionTime
+        }
+        // toggleRunning();
+    }
     //updates every second, as countdown counts in seconds
     if(running === 1 && i > 0){
         i--;
-        updateTime(i);
-        updateTimeDisplay(seconds,minutes);
+        currentTimeObj = updateTime(i);
+        updateTimeDisplay(currentTimeObj);
         //stores the timeout in a referral var
         timeout = setTimeout(mainLoop, 1000);
-    }else if (i <= 0){
-        TIMERSOUND.play();
-        toggleRunning();
     }
 }
 
@@ -58,26 +84,39 @@ function interruptTimeout(){
     }
 }
 
-function updateTimeDisplay(s,m){
+function updateTimeDisplay(obj){
     //flushes the display area and appends the updated data
     var secondDisplay = $('.seconds');
     var minuteDisplay = $('.minutes');
 
     secondDisplay.empty();
-    secondDisplay.append(padZeroes(s,2));
+    secondDisplay.append(padZeroes(obj.seconds,2));
 
     minuteDisplay.empty();
-    minuteDisplay.append(padZeroes(m,m.toString().length));
+    minuteDisplay.append(padZeroes(obj.minutes,obj.minutes.toString().length));
 }
 function updateTime(i){
-    //creates seconds and minutes from supplied time, in seconds
-    seconds = Math.floor(i % 60);
-    minutes = Math.floor(i / 60);
+    //creates seconds and minutes from supplied time, in seconds, and returns an object
+    var seconds = Math.floor(i % 60);
+    var minutes = Math.floor(i / 60);
+
+    var timeObj = {
+        seconds: seconds,
+        minutes: minutes
+    };
+
+    // return [seconds, minutes];
+    return timeObj;
 }
 function updateSessionDisplay(m){
     //flushes session length display and appends updated data
     $('.session-length').empty();
     $('.session-length').append(m);
+}
+function updateBreakDisplay(m){
+    //flushes session length display and appends updated data
+    $('.break-length').empty();
+    $('.break-length').append(m);
 }
 function padZeroes(num,size){
     //adds specified amount of 0s in front of number input, then removes the 0s if the number is larger than 0s

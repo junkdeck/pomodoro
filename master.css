@@ -20,6 +20,30 @@ html,body{
 	background:#e8d264;
 }
 
+.timers{
+	display: flex;
+	width: 200px;
+
+	flex-direction: row;
+
+	justify-content: center;
+	align-items: center;
+
+	background: #f0f;
+}
+.length-box{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+
+	/*flex-grow:2;*/
+	width:100px;
+}
+.session-length{
+}
+.break-length{
+}
+
 .time-display{
 	display:flex;
 }
