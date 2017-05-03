@@ -1,17 +1,13 @@
 var TIMERSOUND = document.createElement("audio");
-// TIMERSOUND.setAttribute("src","./timer.ogg");
+TIMERSOUND.setAttribute("src","./beep.ogg");
 TIMERSOUND.setAttribute("preload","auto");
 
 var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
 var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
 
 var i = 0;              //current clock timer, in seconds
-// var seconds = 0;
-// var minutes = 0;
 
-// var running = 0;    //boolean for keeping track of clock state
-//REMOVE WHEN DONE TESTING
-var running = 1;    //default to one for testing without mouse usage
+var running = 0;    //boolean for keeping track of clock state
 
 var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break
 var timeout = null; //timeout storage
@@ -26,25 +22,10 @@ $(document).ready(function(){
     var breakTimeObj = updateTime(breakTime);
     var currentTimeObj = updateTime(i);
 
+    //updates all time displays with the newly created second/minute objects.
     updateBreakDisplay(breakTimeObj.minutes);
     updateSessionDisplay(sessionTimeObj.minutes);
     updateTimeDisplay(currentTimeObj);
-
-
-    //REMOVE WHEN DONE TESTING!!
-    mainLoop(); //autostart for testing without mouse usage
-    //REMOVE WHEN DONE TESTING!!
-
-    // TIMERSOUND.play();
-});
-
-$('.startstop').on('click', function(){
-    //interrupts current count loop if counter is running on click
-    if(running){
-        interruptTimeout();
-    }
-    toggleRunning();
-    mainLoop();
 });
 
 function mainLoop(){
@@ -76,7 +57,7 @@ function toggleRunning(){
     running ^= 1;
 }
 
-function interruptTimeout(){
+function interruptTimeout(timeout){
     //interrupts the timeout if set
     if(timeout !== null){
         clearTimeout(timeout);
@@ -89,11 +70,8 @@ function updateTimeDisplay(obj){
     var secondDisplay = $('.seconds');
     var minuteDisplay = $('.minutes');
 
-    secondDisplay.empty();
-    secondDisplay.append(padZeroes(obj.seconds,2));
-
-    minuteDisplay.empty();
-    minuteDisplay.append(padZeroes(obj.minutes,obj.minutes.toString().length));
+    secondDisplay.empty().append(padZeroes(obj.seconds,2));
+    minuteDisplay.empty().append(obj.minutes);
 }
 function updateTime(i){
     //creates seconds and minutes from supplied time, in seconds, and returns an object
@@ -105,7 +83,6 @@ function updateTime(i){
         minutes: minutes
     };
 
-    // return [seconds, minutes];
     return timeObj;
 }
 function updateSessionDisplay(m){
@@ -119,6 +96,72 @@ function updateBreakDisplay(m){
     $('.break-length').append(m);
 }
 function padZeroes(num,size){
-    //adds specified amount of 0s in front of number input, then removes the 0s if the number is larger than 0s
+    //adds specified amount of 0s in front of number input, then removes the 0s if the amount of digits is larger than 0s
     return ('00'+num).substr(-size);
 }
+
+$('.startstop').on('click', function(){
+    //interrupts current count loop if counter is running on click
+    toggleRunning();
+    interruptTimeout(timeout);
+    mainLoop();
+
+    if(running === 1){
+        $(this).empty().append("STOP");
+    }else if(running === 0){
+        $(this).empty().append("START");
+    }
+});
+
+$('.session-change').on('click',function(){
+    //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
+    var operator = $(this).attr('data-set');
+    if(operator === 'inc'){
+        sessionTime += 60;
+    }else if(operator === 'dec' && sessionTime > 0){
+        sessionTime -= 60;
+    }
+    //if the current timer is session, reset the current timer and update the length
+    if(currentTimer === 'session'){
+        //stop current timer
+        running = 0;
+        interruptTimeout(timeout);
+        //set total time to new session amount
+        i = sessionTime;
+        //update the current time object and display the new data
+        currentTimeObj = updateTime(i)
+        updateTimeDisplay(currentTimeObj);
+    }
+    //update the session time object and display the new data
+    sessionTimeObj = updateTime(sessionTime);
+    updateSessionDisplay(sessionTimeObj.minutes);
+
+});
+
+$('.break-change').on('click', function(){
+    //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
+    var operator = $(this).attr('data-set');
+    if(operator === 'inc'){
+        breakTime += 60;
+    }else if(operator === 'dec' && breakTime > 0){
+        breakTime -= 60;
+    }
+    //if the current timer is break, reset the current timer and update the length
+    if(currentTimer === 'break'){
+        //stop current timer
+        running = 0;
+        interruptTimeout(timeout);
+        //set total time to new break amount
+        i = breakTime;
+        //update the current time object and display the new data
+        currentTimeObj = updateTime(i);
+        updateTimeDisplay(currentTimeObj);
+    }
+    //update the break time object and display the new data
+    breakTimeObj = updateTime(breakTime);
+    updateBreakDisplay(breakTimeObj.minutes);
+});
+
+$('.junq').on('click',function(){
+    window.open('https://github.com/junkdeck/','_blank');
+});
