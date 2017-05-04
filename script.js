@@ -52,7 +52,7 @@ function mainLoop(){
 }
 
 function toggleRunning(){
-    //toggles running between 0 and 1
+    //toggles running "between" 0 and 1
     //uses XOR gate; outputs 1 if only one input is 1
     running ^= 1;
 }
@@ -72,6 +72,7 @@ function updateTimeDisplay(obj){
 
     secondDisplay.empty().append(padZeroes(obj.seconds,2));
     minuteDisplay.empty().append(obj.minutes);
+    //displays remaining time in page title
 }
 function updateTime(i){
     //creates seconds and minutes from supplied time, in seconds, and returns an object
