@@ -122,7 +122,12 @@ html,body{
 	border-radius: 15px;
 }
 
-.startstop{
+.controls{
+	display: flex;
+	flex-direction: row;
+}
+
+.state-button{
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -132,6 +137,8 @@ html,body{
 
     width: 100px;
     height: 100px;
+
+	margin:0 15px 0 15px;
 
 	font-weight: 700;
 	font-size: 18pt;
@@ -145,9 +152,15 @@ html,body{
 
 	cursor:pointer;cursor:hand;
 }
-.startstop:active{
+.state-button:active{
 	top: 10px;
 	box-shadow: 0 0 #853F7E;
+}
+
+.reset{
+	color:#6c5ea7;
+	background: #998dd2;
+	box-shadow: 0 10px #6c5ea7;
 }
 
 .label{

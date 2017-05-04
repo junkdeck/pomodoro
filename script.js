@@ -52,7 +52,7 @@ function mainLoop(){
 }
 
 function toggleRunning(){
-    //toggles running between 0 and 1
+    //toggles running "between" 0 and 1
     //uses XOR gate; outputs 1 if only one input is 1
     running ^= 1;
 }
@@ -72,6 +72,8 @@ function updateTimeDisplay(obj){
 
     secondDisplay.empty().append(padZeroes(obj.seconds,2));
     minuteDisplay.empty().append(obj.minutes);
+    //displays remaining time in page title
+    $(document).attr('title',currentTimer.toUpperCase()+': '+obj.minutes+":"+padZeroes(obj.seconds,2)+" // POMODORO");
 }
 function updateTime(i){
     //creates seconds and minutes from supplied time, in seconds, and returns an object
@@ -111,6 +113,14 @@ $('.startstop').on('click', function(){
     }else if(running === 0){
         $(this).empty().append("START");
     }
+});
+
+$('.reset').on('click',function(){
+    interruptTimeout(timeout);
+    i = sessionTime;
+    currentTimeObj = updateTime(i);
+    updateTimeDisplay(currentTimeObj);
+    mainLoop();
 });
 
 $('.session-change').on('click',function(){
