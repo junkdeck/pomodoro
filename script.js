@@ -52,7 +52,7 @@ function mainLoop(){
 }
 
 function toggleRunning(){
-    //toggles running "between" 0 and 1
+    //toggles running between 0 and 1
     //uses XOR gate; outputs 1 if only one input is 1
     running ^= 1;
 }
