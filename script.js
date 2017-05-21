@@ -1,6 +1,15 @@
 var TIMERSOUND = document.createElement("audio");
+var SELECTSOUND = document.createElement("audio");
+var UPSOUND = document.createElement("audio");
+var DOWNSOUND = document.createElement("audio");
 TIMERSOUND.setAttribute("src","./beep.ogg");
 TIMERSOUND.setAttribute("preload","auto");
+SELECTSOUND.setAttribute("src","./select.ogg");
+SELECTSOUND.setAttribute("preload","auto");
+UPSOUND.setAttribute("src","./up.ogg");
+UPSOUND.setAttribute("preload","auto");
+DOWNSOUND.setAttribute("src","./down.ogg");
+DOWNSOUND.setAttribute("preload","auto");
 
 var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
 var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
@@ -102,9 +111,15 @@ function padZeroes(num,size){
     return ('00'+num).substr(-size);
 }
 
+function playSound(sound){
+	sound.currentTime = 0;
+	sound.play();
+}
+
 $('.startstop').on('click', function(){
     //interrupts current count loop if counter is running on click
-    toggleRunning();
+	playSound(SELECTSOUND);
+	toggleRunning();
     interruptTimeout(timeout);
     mainLoop();
 
@@ -116,6 +131,7 @@ $('.startstop').on('click', function(){
 });
 
 $('.reset').on('click',function(){
+	playSound(SELECTSOUND);
     interruptTimeout(timeout);
     i = sessionTime;
     currentTimeObj = updateTime(i);
@@ -127,8 +143,10 @@ $('.session-change').on('click',function(){
     //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
     var operator = $(this).attr('data-set');
     if(operator === 'inc'){
+		playSound(UPSOUND);
         sessionTime += 60;
     }else if(operator === 'dec' && sessionTime > 0){
+		playSound(DOWNSOUND);
         sessionTime -= 60;
     }
     //if the current timer is session, reset the current timer and update the length
@@ -152,8 +170,10 @@ $('.break-change').on('click', function(){
     //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
     var operator = $(this).attr('data-set');
     if(operator === 'inc'){
+		playSound(UPSOUND);
         breakTime += 60;
     }else if(operator === 'dec' && breakTime > 0){
+		playSound(DOWNSOUND);
         breakTime -= 60;
     }
     //if the current timer is break, reset the current timer and update the length
