@@ -36,12 +36,13 @@ var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
 var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
 var restTime = 1800;        //rest time, in seconds. defaults to 30 minutes.
 
-breakTime = 2;
-sessionTime = 2;
-restTime = 3;
+// breakTime = 2;
+// sessionTime = 2;
+// restTime = 3;
 
 var i = 0;              //current clock timer, in seconds
-var laps = 0;         // keeps track of how many laps have eLAPSed
+var lap = 0;         // keeps track of how many laps have eLAPSed
+var laps = ["I","II","III","IV","V"];
 
 var running = 0;    //boolean for keeping track of clock state
 
@@ -72,14 +73,14 @@ function mainLoop(){
   if (i <= 0){
     if(currentTimer === 'session'){
       // increment laps after a session is over
-      laps++;
+      lap++;
       // change timer to break if laps are less than 4
-      if(laps < 4){
+      if(lap < 4){
         currentTimer = 'break';
         i = breakTime;
         playSound(TOBREAK);
       // change timer to rest if laps are 4 or more
-      }else if(laps >= 4){
+    }else if(lap >= 4){
         currentTimer = 'rest';
         i = restTime;
         playSound(TOREST);
@@ -87,13 +88,13 @@ function mainLoop(){
     }else if(currentTimer === 'break' || currentTimer === 'rest'){
       if(currentTimer === 'rest'){
         // resets laps after a rest period
-        laps = 0;
+        lap = 0;
       }
       currentTimer = 'session';
       i = sessionTime;
       playSound(TOSESSION);
     }
-    updateLapDisplay(laps);
+    updateLapDisplay(lap);
   }
   //updates every second
   if(running === 1 && i > 0){
@@ -193,8 +194,8 @@ function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit, i){
   return i;
 }
 
-function updateLapDisplay(laps){
-  $('.lap-counter').empty().append(laps);
+function updateLapDisplay(lap){
+  $('.lap-counter').empty().append(laps[lap]);
 }
 
 $('.startstop').on('click', function(){
