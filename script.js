@@ -59,6 +59,10 @@ function mainLoop(){
         i = restTime;
       }
     }else if(currentTimer === 'break' || currentTimer === 'rest'){
+      if(currentTimer === 'rest'){
+        // resets laps after a rest period
+        laps = 0;
+      }
       currentTimer = 'session';
       i = sessionTime;
     }
