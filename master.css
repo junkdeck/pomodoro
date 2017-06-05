@@ -151,16 +151,17 @@ html,body{
 	position:relative;
 	top:0;
 
-    width: 100px;
-    height: 100px;
+	width: 120px;
+  height: 60px;
 
-	margin:0 15px 0 15px;
+	margin:0 35px 0 35px;
 
 	font-weight: 700;
 	font-size: 18pt;
 	color: #853F7E;
-    background: #D28DCB;
-	border-radius: 50%;
+	background: #D28DCB;
+
+	border-radius: 15px;
 
 	box-shadow: 0 10px #853F7E;
 
@@ -196,6 +197,10 @@ html,body{
 
 	position:absolute;
 	z-index: 1;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .anything-that-isnt-lap{
@@ -206,4 +211,12 @@ html,body{
 	align-items: center;
 
 	z-index: 100;
+}
+
+.howto{
+	height:0px;
+	text-align: center;
+	position:relative;
+	color: #385b1f;
+	/*bottom:18%;*/
 }
