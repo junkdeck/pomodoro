@@ -166,14 +166,14 @@ function timerLengthChange(timeUnit, operator){
   if(operator === 'inc'){
     playSound(UPSOUND);
     timeUnit += 60;
-  }else if(operator === 'dec'){
+  }else if(operator === 'dec' && timeUnit > 0){
     playSound(DOWNSOUND);
     timeUnit -= 60;
   }
   return timeUnit;
 }
 
-function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit){
+function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit, i){
   if(currentTimer === timerType){
     //stop current timer
     $('.startstop').empty().append("START");
@@ -186,6 +186,7 @@ function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit){
 
     return timeUnit;
   }
+  return i;
 }
 
 $('.startstop').on('click', function(){
@@ -218,7 +219,7 @@ $('.session-change').on('click',function(){
   var operator = $(this).attr('data-set');
   sessionTime = timerLengthChange(sessionTime, operator);
   // stops clock when the current session timer is changed
-  i = timerChangeStopClock('session', currentTimer, timeout, sessionTime);
+  i = timerChangeStopClock('session', currentTimer, timeout, sessionTime, i);
   //update the session time object and display the new data
   sessionTimeObj = updateTime(sessionTime);
   updateSessionDisplay(sessionTimeObj.minutes);
@@ -229,16 +230,17 @@ $('.break-change').on('click', function(){
   var operator = $(this).attr('data-set');
   breakTime = timerLengthChange(breakTime, operator);
   // stops clock when the current session timer is changed
-  i = timerChangeStopClock('break', currentTimer, timeout, breakTime);
+  i = timerChangeStopClock('break', currentTimer, timeout, breakTime, i);
   //update the break time object and display the new data
   breakTimeObj = updateTime(breakTime);
   updateBreakDisplay(breakTimeObj.minutes);
+  console.log(i);
 });
 
 $('.rest-change').on('click', function(){
   var operator = $(this).attr('data-set');
   restTime = timerLengthChange(restTime, operator);
-  i = timerChangeStopClock('rest', currentTimer, timeout, restTime);
+  i = timerChangeStopClock('rest', currentTimer, timeout, restTime, i);
 
   restTimeObj = updateTime(restTime);
   updateRestDisplay(restTimeObj.minutes);
