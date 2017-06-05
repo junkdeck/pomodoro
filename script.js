@@ -36,6 +36,10 @@ var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
 var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
 var restTime = 1800;        //rest time, in seconds. defaults to 30 minutes.
 
+breakTime = 2;
+sessionTime = 2;
+restTime = 3;
+
 var i = 0;              //current clock timer, in seconds
 var laps = 0;         // keeps track of how many laps have eLAPSed
 
@@ -89,6 +93,7 @@ function mainLoop(){
       i = sessionTime;
       playSound(TOSESSION);
     }
+    updateLapDisplay(laps);
   }
   //updates every second
   if(running === 1 && i > 0){
@@ -186,6 +191,10 @@ function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit, i){
     return timeUnit;
   }
   return i;
+}
+
+function updateLapDisplay(laps){
+  $('.lap-counter').empty().append(laps);
 }
 
 $('.startstop').on('click', function(){

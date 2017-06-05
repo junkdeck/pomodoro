@@ -1,0 +1,73 @@
+.junq{
+    width:0;
+    height:0;
+    border-left: solid 35px transparent;
+    border-right: solid 35px transparent;
+    border-bottom: solid 60px #a0d28d;
+
+    position:absolute;
+    right:10px;
+    bottom:10px;
+
+    cursor:pointer;cursor:hand;
+}
+.junq::before{
+    content:'';
+    display:block;
+    width:20px;
+    height:20px;
+    background:#6d9d4b;
+
+    position:relative;
+    right:10px;
+    bottom:-25px;
+
+    border-radius: 80% 5%;
+    transform:rotate(45deg);
+}
+.junq::after{
+    content:'';
+    display:block;
+    width:18px;
+    height:18px;
+    background:#a0d28d;
+
+    position:relative;
+    border-radius:50%;
+
+    right:9px;
+    bottom:-1px;
+}
+.junq-lash{
+    position:absolute;
+    right:44px;
+    bottom:23px;
+    width:2px;
+    height:5px;
+
+    background:#6d9d4b;
+}
+.junq-lash::before{
+    content:'';
+    display:block;
+    width:3px;
+    height:5px;
+    background:#6d9d4b;
+
+    position:relative;
+    right:8px;
+    bottom:2px;
+    transform:rotate(23deg);
+}
+.junq-lash::after{
+    content:'';
+    display:block;
+    width:3px;
+    height:6px;
+    background:#6d9d4b;
+
+    position:relative;
+    right:-7px;
+    bottom:7px;
+    transform:rotate(-23deg);
+}
