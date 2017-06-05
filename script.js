@@ -152,9 +152,12 @@ function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit){
     $('.startstop').empty().append("START");
     running = 0;
     interruptTimeout(timeout);
+    // set timer
     //set total time to new session amount
     currentTimeObj = updateTime(timeUnit)
     updateTimeDisplay(currentTimeObj);
+
+    return timeUnit;
   }
 }
 
@@ -188,7 +191,7 @@ $('.session-change').on('click',function(){
   var operator = $(this).attr('data-set');
   sessionTime = timerLengthChange(sessionTime, operator);
   // stops clock when the current session timer is changed
-  timerChangeStopClock('session', currentTimer, timeout, sessionTime);
+  i = timerChangeStopClock('session', currentTimer, timeout, sessionTime);
   //update the session time object and display the new data
   sessionTimeObj = updateTime(sessionTime);
   updateSessionDisplay(sessionTimeObj.minutes);
@@ -199,7 +202,7 @@ $('.break-change').on('click', function(){
   var operator = $(this).attr('data-set');
   breakTime = timerLengthChange(breakTime, operator);
   // stops clock when the current session timer is changed
-  timerChangeStopClock('break', currentTimer, timeout, breakTime);
+  i = timerChangeStopClock('break', currentTimer, timeout, breakTime);
   //update the break time object and display the new data
   breakTimeObj = updateTime(breakTime);
   updateBreakDisplay(breakTimeObj.minutes);
@@ -208,7 +211,7 @@ $('.break-change').on('click', function(){
 $('.rest-change').on('click', function(){
   var operator = $(this).attr('data-set');
   restTime = timerLengthChange(restTime, operator);
-  timerChangeStopClock('rest', currentTimer, timeout, restTime);
+  i = timerChangeStopClock('rest', currentTimer, timeout, restTime);
 
   restTimeObj = updateTime(restTime);
   updateRestDisplay(restTimeObj.minutes);
