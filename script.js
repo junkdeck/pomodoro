@@ -63,11 +63,11 @@ $(document).ready(function(){
 });
 
 function mainLoop(){
-  //play sound when timer runs out, then toggle between session/break time and set the timer to the respective length
+  // behavior when timer zeroes out
+  // increments lap counter, determines timer type and specifies timer sounds to play
   if (i <= 0){
-    // currentTimer === 'session' ? currentTimer = 'break' : currentTimer = 'session';
     if(currentTimer === 'session'){
-      //only increment laps after a session is over, not break
+      // increment laps after a session is over
       laps++;
       // change timer to break if laps are less than 4
       if(laps < 4){
@@ -89,9 +89,8 @@ function mainLoop(){
       i = sessionTime;
       playSound(TOSESSION);
     }
-    // toggleRunning();
   }
-  //updates every second, as countdown counts in seconds
+  //updates every second
   if(running === 1 && i > 0){
     i--;
     currentTimeObj = updateTime(i);
