@@ -13,12 +13,13 @@ DOWNSOUND.setAttribute("preload","auto");
 
 var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
 var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
+var restTime = 1800;        //rest time, in seconds. defaults to 30 minutes.
 
 var i = 0;              //current clock timer, in seconds
 
 var running = 0;    //boolean for keeping track of clock state
 
-var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break
+var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break / rest
 var timeout = null; //timeout storage
 
 $(document).ready(function(){
@@ -29,11 +30,13 @@ $(document).ready(function(){
   //updateTime returns an array with the time, in the order of "seconds, minutes"
   var sessionTimeObj = updateTime(sessionTime);
   var breakTimeObj = updateTime(breakTime);
+  var restTimeObj = updateTime(restTime);
   var currentTimeObj = updateTime(i);
 
   //updates all time displays with the newly created second/minute objects.
   updateBreakDisplay(breakTimeObj.minutes);
   updateSessionDisplay(sessionTimeObj.minutes);
+  updateRestDisplay(restTimeObj.minutes);
   updateTimeDisplay(currentTimeObj);
 });
 
@@ -107,6 +110,10 @@ function updateBreakDisplay(m){
   $('.break-length').empty();
   $('.break-length').append(m);
 }
+function updateRestDisplay(m){
+  $('.rest-length').empty();
+  $('.rest-length').append(m);
+}
 function padZeroes(num,size){
   //adds specified amount of 0s in front of number input, then removes the 0s if the amount of digits is larger than 0s
   return ('00'+num).substr(-size);
@@ -115,6 +122,30 @@ function padZeroes(num,size){
 function playSound(sound){
   sound.currentTime = 0;
   sound.play();
+}
+
+function timerLengthChange(timeUnit, operator){
+  //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
+  if(operator === 'inc'){
+    playSound(UPSOUND);
+    timeUnit += 60;
+  }else if(operator === 'dec'){
+    playSound(DOWNSOUND);
+    timeUnit -= 60;
+  }
+  return timeUnit;
+}
+
+function timerChangeStopClock(timerType, currentTimer, timeout, timeUnit){
+  if(currentTimer === timerType){
+    //stop current timer
+    $('.startstop').empty().append("START");
+    running = 0;
+    interruptTimeout(timeout);
+    //set total time to new session amount
+    currentTimeObj = updateTime(timeUnit)
+    updateTimeDisplay(currentTimeObj);
+  }
 }
 
 $('.startstop').on('click', function(){
@@ -145,24 +176,9 @@ $('.reset').on('click',function(){
 $('.session-change').on('click',function(){
   //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
   var operator = $(this).attr('data-set');
-  if(operator === 'inc'){
-    playSound(UPSOUND);
-    sessionTime += 60;
-  }else if(operator === 'dec' && sessionTime > 0){
-    playSound(DOWNSOUND);
-    sessionTime -= 60;
-  }
-  //if the current timer is session, reset the current timer and update the length
-  if(currentTimer === 'session'){
-    //stop current timer
-    running = 0;
-    interruptTimeout(timeout);
-    //set total time to new session amount
-    i = sessionTime;
-    //update the current time object and display the new data
-    currentTimeObj = updateTime(i)
-    updateTimeDisplay(currentTimeObj);
-  }
+  sessionTime = timerLengthChange(sessionTime, operator);
+  // stops clock when the current session timer is changed
+  timerChangeStopClock('session', currentTimer, timeout, sessionTime);
   //update the session time object and display the new data
   sessionTimeObj = updateTime(sessionTime);
   updateSessionDisplay(sessionTimeObj.minutes);
@@ -170,26 +186,10 @@ $('.session-change').on('click',function(){
 });
 
 $('.break-change').on('click', function(){
-  //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
   var operator = $(this).attr('data-set');
-  if(operator === 'inc'){
-    playSound(UPSOUND);
-    breakTime += 60;
-  }else if(operator === 'dec' && breakTime > 0){
-    playSound(DOWNSOUND);
-    breakTime -= 60;
-  }
-  //if the current timer is break, reset the current timer and update the length
-  if(currentTimer === 'break'){
-    //stop current timer
-    running = 0;
-    interruptTimeout(timeout);
-    //set total time to new break amount
-    i = breakTime;
-    //update the current time object and display the new data
-    currentTimeObj = updateTime(i);
-    updateTimeDisplay(currentTimeObj);
-  }
+  breakTime = timerLengthChange(breakTime, operator);
+  // stops clock when the current session timer is changed
+  timerChangeStopClock('break', currentTimer, timeout, breakTime);
   //update the break time object and display the new data
   breakTimeObj = updateTime(breakTime);
   updateBreakDisplay(breakTimeObj.minutes);
