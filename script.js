@@ -1,14 +1,35 @@
-var TIMERSOUND = document.createElement("audio");
+// create audio elements ------------------------------------------
 var SELECTSOUND = document.createElement("audio");
 var UPSOUND = document.createElement("audio");
 var DOWNSOUND = document.createElement("audio");
-TIMERSOUND.setAttribute("src","./beep.ogg");
+// timer sounds ---------------------------------
+var TOBREAK = document.createElement("audio");
+var TOREST = document.createElement("audio");
+var TOSESSION = document.createElement("audio");
+var TIMERSOUND = document.createElement("audio");
+// reset sounds -----------------------------
+var RESETSET = document.createElement("audio");
+var RESETLAP = document.createElement("audio");
+// sample loading -------------------------------------------------
+TOBREAK.setAttribute("src","./sfx/to-break.ogg");
+TOBREAK.setAttribute("preload", "auto");
+TOREST.setAttribute("src","./sfx/to-rest.ogg");
+TOREST.setAttribute("preload", "auto");
+TOSESSION.setAttribute("src","./sfx/to-session.ogg");
+TOSESSION.setAttribute("preload", "auto");
+
+RESETSET.setAttribute("src","./sfx/reset-set.ogg");
+RESETSET.setAttribute("preload", "auto");
+RESETLAP.setAttribute("src","./sfx/reset-lap.ogg");
+RESETLAP.setAttribute("preload", "auto");
+
+TIMERSOUND.setAttribute("src","./sfx/beep.ogg");
 TIMERSOUND.setAttribute("preload","auto");
-SELECTSOUND.setAttribute("src","./select.ogg");
+SELECTSOUND.setAttribute("src","./sfx/select.ogg");
 SELECTSOUND.setAttribute("preload","auto");
-UPSOUND.setAttribute("src","./up.ogg");
+UPSOUND.setAttribute("src","./sfx/up.ogg");
 UPSOUND.setAttribute("preload","auto");
-DOWNSOUND.setAttribute("src","./down.ogg");
+DOWNSOUND.setAttribute("src","./sfx/down.ogg");
 DOWNSOUND.setAttribute("preload","auto");
 
 var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
@@ -44,7 +65,6 @@ $(document).ready(function(){
 function mainLoop(){
   //play sound when timer runs out, then toggle between session/break time and set the timer to the respective length
   if (i <= 0){
-    TIMERSOUND.play();
     // currentTimer === 'session' ? currentTimer = 'break' : currentTimer = 'session';
     if(currentTimer === 'session'){
       //only increment laps after a session is over, not break
@@ -53,10 +73,12 @@ function mainLoop(){
       if(laps < 4){
         currentTimer = 'break';
         i = breakTime;
+        playSound(TOBREAK);
       // change timer to rest if laps are 4 or more
       }else if(laps >= 4){
         currentTimer = 'rest';
         i = restTime;
+        playSound(TOREST);
       }
     }else if(currentTimer === 'break' || currentTimer === 'rest'){
       if(currentTimer === 'rest'){
@@ -65,6 +87,7 @@ function mainLoop(){
       }
       currentTimer = 'session';
       i = sessionTime;
+      playSound(TOSESSION);
     }
     // toggleRunning();
   }
@@ -181,7 +204,7 @@ $('.startstop').on('click', function(){
 
 $('.reset').on('click',function(){
   // resets the currently running timer back to SESSION, with the specified session timer length
-  playSound(SELECTSOUND);
+  playSound(RESETLAP);
   interruptTimeout(timeout);
   i = sessionTime;
   currentTimer = 'session';
