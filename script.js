@@ -47,11 +47,20 @@ function mainLoop(){
     TIMERSOUND.play();
     // currentTimer === 'session' ? currentTimer = 'break' : currentTimer = 'session';
     if(currentTimer === 'session'){
-      currentTimer = 'break';
-      i = breakTime;
-    }else if(currentTimer === 'break'){
+      //only increment laps after a session is over, not break
+      laps++;
+      // change timer to break if laps are less than 4
+      if(laps < 4){
+        currentTimer = 'break';
+        i = breakTime;
+      // change timer to rest if laps are 4 or more
+      }else if(laps >= 4){
+        currentTimer = 'rest';
+        i = restTime;
+      }
+    }else if(currentTimer === 'break' || currentTimer === 'rest'){
       currentTimer = 'session';
-      i = sessionTime
+      i = sessionTime;
     }
     // toggleRunning();
   }
@@ -200,6 +209,7 @@ $('.rest-change').on('click', function(){
   var operator = $(this).attr('data-set');
   restTime = timerLengthChange(restTime, operator);
   timerChangeStopClock('rest', currentTimer, timeout, restTime);
+
   restTimeObj = updateTime(restTime);
   updateRestDisplay(restTimeObj.minutes);
 });
