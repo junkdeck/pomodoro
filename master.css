@@ -128,7 +128,9 @@ html,body{
 	height: 10%;
 	margin: 5px 0 15px 0;
 
-	font-size: 24pt;
+	padding: 20px 0 20px 0;
+
+	font-size: 48pt;
 	color: #853F7E;
 	background: #D28DCB;
 	border-radius: 15px;
