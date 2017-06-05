@@ -16,6 +16,7 @@ var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minut
 var restTime = 1800;        //rest time, in seconds. defaults to 30 minutes.
 
 var i = 0;              //current clock timer, in seconds
+var laps = 0;         // keeps track of how many laps have eLAPSed
 
 var running = 0;    //boolean for keeping track of clock state
 
@@ -193,6 +194,14 @@ $('.break-change').on('click', function(){
   //update the break time object and display the new data
   breakTimeObj = updateTime(breakTime);
   updateBreakDisplay(breakTimeObj.minutes);
+});
+
+$('.rest-change').on('click', function(){
+  var operator = $(this).attr('data-set');
+  restTime = timerLengthChange(restTime, operator);
+  timerChangeStopClock('rest', currentTimer, timeout, restTime);
+  restTimeObj = updateTime(restTime);
+  updateRestDisplay(restTimeObj.minutes);
 });
 
 $('.junq').on('click',function(){
