@@ -45,7 +45,8 @@ var i = 0;              //current clock timer, in seconds
 var lap = 0;         // keeps track of how many laps have eLAPSed
 var laps = ["I","II","III","IV","V"];
 
-var running = 0;    //boolean for keeping track of clock state
+var running = 0;    // boolean for keeping track of clock state
+var muted = 1;      // determines whether sound should play or not
 
 var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break / rest
 var timeout = null; //timeout storage
@@ -113,6 +114,18 @@ function toggleRunning(){
   running ^= 1;
 }
 
+function toggleSound(){
+  // see toggleRunning
+  muted ^= 1;
+}
+
+function playSound(sound){
+  if(muted === 0){
+    sound.currentTime = 0;
+    sound.play();
+  }
+}
+
 function interruptTimeout(timeout){
   //interrupts the timeout if set
   if(timeout !== null){
@@ -162,10 +175,6 @@ function padZeroes(num,size){
   return ('00'+num).substr(-size);
 }
 
-function playSound(sound){
-  sound.currentTime = 0;
-  sound.play();
-}
 
 function timerLengthChange(timeUnit, operator){
   //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
@@ -259,4 +268,13 @@ $('.rest-change').on('click', function(){
 
 $('.junq').on('click',function(){
   window.open('https://github.com/junkdeck/','_blank');
+});
+
+$('.sounder').on('click', function(){
+  toggleSound();
+  if(muted === 1){
+    $('.sounder-waves').css("opacity","0");
+  }else if(muted === 0){
+    $('.sounder-waves').css("opacity","1");
+  }
 });
