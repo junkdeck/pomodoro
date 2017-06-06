@@ -1,0 +1,43 @@
+.sounder{
+  position: absolute;
+  top:0;
+  right:0;
+
+  margin: 5px;
+
+  width: 50px;
+  height: 50px;
+}
+
+.sounder-speaker{
+  position: relative;
+
+  border-top: solid 16px transparent;
+  border-bottom: solid 16px transparent;
+  border-left: solid 22px #a0d28d;
+}
+
+.sounder-speaker::after{
+  content:"";
+  display: block;
+
+  width: 20px;
+  height: 30px;
+  background: #a0d28d;
+
+  border-radius: 0 3px 3px 0;
+}
+
+.sounder-waves{
+  width:30px;
+  height:30px;
+
+  border:10px double #a0d28d;
+  border-width:0px 0px 8px 8px;
+  border-radius:0 0 0 50px;
+  transform:rotate(45deg);
+
+  position: relative;
+  bottom: 50px;
+  right:28px;
+}
