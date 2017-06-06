@@ -1,12 +1,12 @@
 // create audio elements ------------------------------------------
-var SELECTSOUND = document.createElement("audio");
+var STARTSOUND = document.createElement("audio");
+var STOPSOUND = document.createElement("audio");
 var UPSOUND = document.createElement("audio");
 var DOWNSOUND = document.createElement("audio");
 // timer sounds ---------------------------------
 var TOBREAK = document.createElement("audio");
 var TOREST = document.createElement("audio");
 var TOSESSION = document.createElement("audio");
-var TIMERSOUND = document.createElement("audio");
 // reset sounds -----------------------------
 var RESETSET = document.createElement("audio");
 var RESETLAP = document.createElement("audio");
@@ -23,13 +23,14 @@ RESETSET.setAttribute("preload", "auto");
 RESETLAP.setAttribute("src","./sfx/reset-lap.ogg");
 RESETLAP.setAttribute("preload", "auto");
 
-TIMERSOUND.setAttribute("src","./sfx/beep.ogg");
-TIMERSOUND.setAttribute("preload","auto");
-SELECTSOUND.setAttribute("src","./sfx/select.ogg");
-SELECTSOUND.setAttribute("preload","auto");
-UPSOUND.setAttribute("src","./sfx/up.ogg");
+STARTSOUND.setAttribute("src","./sfx/start-clock.ogg");
+STARTSOUND.setAttribute("preload","auto");
+STOPSOUND.setAttribute("src","./sfx/stop-clock.ogg");
+STOPSOUND.setAttribute("preload","auto");
+
+UPSOUND.setAttribute("src","./sfx/change-up.ogg");
 UPSOUND.setAttribute("preload","auto");
-DOWNSOUND.setAttribute("src","./sfx/down.ogg");
+DOWNSOUND.setAttribute("src","./sfx/change-down.ogg");
 DOWNSOUND.setAttribute("preload","auto");
 
 var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
@@ -200,14 +201,15 @@ function updateLapDisplay(lap){
 
 $('.startstop').on('click', function(){
   //interrupts current count loop if counter is running on click
-  playSound(SELECTSOUND);
   toggleRunning();
   interruptTimeout(timeout);
   mainLoop();
 
   if(running === 1){
+    playSound(STARTSOUND);
     $(this).empty().append("STOP");
   }else if(running === 0){
+    playSound(STOPSOUND);
     $(this).empty().append("START");
   }
 });
