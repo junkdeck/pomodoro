@@ -225,6 +225,11 @@ $('.startstop').on('click', function(){
 
 $('.reset').on('click',function(){
   // resets the currently running timer back to SESSION, with the specified session timer length
+  if(currentTimer === 'rest'){
+    lap = 0;
+    updateLapDisplay(lap);
+  }
+
   playSound(RESETLAP);
   interruptTimeout(timeout);
   i = sessionTime;
