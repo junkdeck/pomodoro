@@ -173,10 +173,8 @@ function padZeroes(num,size){
 function timerLengthChange(timeUnit, operator){
   //adds or subtracts 60 seconds to the session time, depending on the data-set value, the operator
   if(operator === 'inc'){
-    playSound(UPSOUND);
     timeUnit += 60;
   }else if(operator === 'dec' && timeUnit > 0){
-    playSound(DOWNSOUND);
     timeUnit -= 60;
   }
   return timeUnit;
