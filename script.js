@@ -1,3 +1,7 @@
+// cookie - remembers users choice for sound on page, defaults to no sound
+muted = document.cookie
+
+
 // create audio elements ------------------------------------------
 var STARTSOUND = document.createElement("audio");
 var STOPSOUND = document.createElement("audio");
@@ -36,7 +40,7 @@ var lap = 0;         // keeps track of how many laps have eLAPSed
 var laps = ["I","II","III","IV","V"];
 
 var running = 0;    // boolean for keeping track of clock state
-var muted = 1;      // determines whether sound should play or not
+// var muted = 1;      // determines whether sound should play or not
 
 var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break / rest
 var timeout = null; //timeout storage
