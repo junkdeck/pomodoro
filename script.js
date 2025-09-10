@@ -1,7 +1,3 @@
-// cookie - remembers users choice for sound on page, defaults to no sound
-muted = document.cookie
-
-
 // create audio elements ------------------------------------------
 var STARTSOUND = document.createElement("audio");
 var STOPSOUND = document.createElement("audio");
@@ -27,9 +23,9 @@ STARTSOUND.setAttribute("preload","auto");
 STOPSOUND.setAttribute("src","./sfx/stop-clock.ogg");
 STOPSOUND.setAttribute("preload","auto");
 
-var breakTime = 300;        //break timer, in seconds. defaults to 5 minutes.
-var sessionTime = 1500;        //session timer, in seconds. defaults to 25 minutes.
-var restTime = 1800;        //rest time, in seconds. defaults to 30 minutes.
+var breakTime = 5 * 60;        //break timer, in seconds. defaults to 5 minutes.
+var sessionTime = 25 * 60;        //session timer, in seconds. defaults to 25 minutes.
+var restTime = 15 * 60;        //rest time, in seconds. defaults to 15 minutes.
 
 // breakTime = 2;
 // sessionTime = 2;
@@ -40,7 +36,7 @@ var lap = 0;         // keeps track of how many laps have eLAPSed
 var laps = ["I","II","III","IV","V"];
 
 var running = 0;    // boolean for keeping track of clock state
-// var muted = 1;      // determines whether sound should play or not
+var muted = 1;      // determines whether sound should play or not
 
 var currentTimer = 'session';   //keeps track of which countdown is currently active - session / break / rest
 var timeout = null; //timeout storage
