@@ -27,10 +27,6 @@ var breakTime = 5 * 60;        //break timer, in seconds. defaults to 5 minutes.
 var sessionTime = 25 * 60;        //session timer, in seconds. defaults to 25 minutes.
 var restTime = 15 * 60;        //rest time, in seconds. defaults to 15 minutes.
 
-// breakTime = 2;
-// sessionTime = 2;
-// restTime = 3;
-
 var i = 0;              //current clock timer, in seconds
 var lap = 0;         // keeps track of how many laps have eLAPSed
 var laps = ["I","II","III","IV","V"];
@@ -247,7 +243,6 @@ $('.break-change').on('click', function(){
   //update the break time object and display the new data
   breakTimeObj = updateTime(breakTime);
   updateBreakDisplay(breakTimeObj.minutes);
-  console.log(i);
 });
 
 $('.rest-change').on('click', function(){
